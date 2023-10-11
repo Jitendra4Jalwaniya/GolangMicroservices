@@ -10,6 +10,7 @@ import (
 	"os/signal"
 	"time"
 
+	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -39,10 +40,12 @@ func main() {
 	deleteR := sm.Methods(http.MethodDelete).Subrouter()
 	deleteR.HandleFunc("/products/{id:[0-9]+}", ph.Delete)
 
+	ch := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"http://localhost:3000"}))
+
 	// create a new server
 	s := http.Server{
 		Addr:         ":9090",           // configure the bind address
-		Handler:      sm,                // set the default handler
+		Handler:      ch(sm),            // set the default handler
 		ErrorLog:     l,                 // set the logger for the server
 		ReadTimeout:  5 * time.Second,   // max time to read request from the client
 		WriteTimeout: 10 * time.Second,  // max time to write response to the client
