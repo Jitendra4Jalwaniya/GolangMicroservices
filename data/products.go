@@ -1,11 +1,5 @@
 package data
 
-import (
-	"fmt"
-)
-
-var ErrProductNotFound = fmt.Errorf("product not found")
-
 // Product defines the structure for an API product
 // swagger:model
 type Product struct {
